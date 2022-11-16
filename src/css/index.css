@@ -1,0 +1,52 @@
+.header {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 100%;
+
+  background-color: rgba(243, 87, 87, 0.8);
+}
+
+.header__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+input {
+  width: 200px;
+  height: 30px;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+
+  color: rgb(89, 64, 231);
+  background-color: rgb(250, 250, 252);
+
+  border: 1 solid rgb(89, 64, 231);
+  border-radius: 4px;
+}
+
+.gallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
