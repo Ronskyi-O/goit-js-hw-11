@@ -37,31 +37,23 @@ pageCounter = 1
 
 function createMarkup(dataResponse) {
     const markup = dataResponse.map(image => `
-    <ul class="gallery__list">
-        <li class="gallery__item">
-            <div class="gallery__image-thumb">
-                <a href=""><img src=" " alt="" title="" class="image" /></a>
-            </div>
-            <ul class="gallery__info info">
-                <li class="info__item">
-                    <h2 class="info__name"></h2>
-                    <p class="info__value"></p>
-                </li>
-                <li class="info__item">
-                    <h2 class="info__name"></h2>
-                    <p class="info__value"></p>
-                </li>
-                <li class="info__item">
-                    <h2 class="info__name"></h2>
-                    <p class="info__value"></p>
-                </li>
-                <li class="info__item">
-                    <h2 class="info__name"></h2>
-                    <p class="info__value"></p>
-                </li>
-            </ul>
-        </li>
-    </ul>
+    <div class="photo-card">
+        <img src="" alt="" loading="lazy" />
+        <div class="info">
+            <p class="info-item">
+                <b>Likes</b>
+            </p>
+            <p class="info-item">
+                <b>Views</b>
+            </p>
+            <p class="info-item">
+                <b>Comments</b>
+            </p>
+            <p class="info-item">
+                <b>Downloads</b>
+            </p>
+        </div>
+    </div>
         `).join('')
     getEl('.gallery').insertAdjacentHTML('beforeend', markup)
 }
