@@ -7,7 +7,7 @@ export async function fetchImages(searchImageName, page) {
         const dataResponse = response.data.hits;
         return dataResponse;
     } catch(error) {
-console.log(error);
+        console.log(error);
     }
 
 }  
