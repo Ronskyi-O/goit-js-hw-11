@@ -24,24 +24,37 @@ function onImputSabmit(event) {
     clearMarkup()
     hideButtonLoadmore()
     fetchImages(searchImageName, pageCounter).then(dataResponse => {
-        if (dataResponse.length === 0) {
+        if (dataResponse.data.totalHits === 0) {
+            console.log(dataResponse);
             Notify.info('Sorry, there are no images matching your search query. Please try again.')
         } else {
             createMarkup(dataResponse);
             showButtonLoadmore()
-            console.log(dataResponse);
+            console.log(pageCounter);
         }
-        }
-        )
+    }
+    )
     incrementPageCounter()
     
     
 }
 
 function loadMore(event) {
-    fetchImages(searchImageName, pageCounter).then(dataResponse => createMarkup(dataResponse))
-     incrementPageCounter()
-}
+    fetchImages(searchImageName, pageCounter).then(dataResponse => {
+            createMarkup(dataResponse);
+            incrementPageCounter()
+            console.log(pageCounter);
+            console.log(dataResponse);
+        
+            if (pageCounter >= dataResponse.data.totalHits / 40) {
+                hideButtonLoadmore()
+                const timerId = setTimeout(() => {
+                    Notify.info("We're sorry, but you've reached the end of search results.");
+                }, 2000)
+                
+        } 
+        })
+    }
 
 function incrementPageCounter() {
     pageCounter++;
@@ -52,7 +65,7 @@ pageCounter = 1
 }
 
 function createMarkup(dataResponse) {
-    const markup = dataResponse.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+    const markup = dataResponse.data.hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         return `
     <div class="photo-card">
     <a href="${largeImageURL}" >
