@@ -24,29 +24,28 @@ function onImputSabmit(event) {
     clearMarkup()
     hideButtonLoadmore()
     fetchImages(searchImageName, pageCounter).then(dataResponse => {
-        if (dataResponse.data.totalHits === 0) {
-            console.log(dataResponse);
+        const totalHits = dataResponse.data.totalHits;
+
+        if (totalHits === 0) {
             Notify.info('Sorry, there are no images matching your search query. Please try again.')
         } else {
             createMarkup(dataResponse);
-            showButtonLoadmore()
-            console.log(pageCounter);
+            showButtonLoadmore();
+            Notify.info(`Hooray! We found ${totalHits} images.`);
         }
     }
     )
-    incrementPageCounter()
-    
-    
+    incrementPageCounter();
 }
 
 function loadMore(event) {
     fetchImages(searchImageName, pageCounter).then(dataResponse => {
+            const totalHits = dataResponse.data.totalHits;
+
             createMarkup(dataResponse);
             incrementPageCounter()
-            console.log(pageCounter);
-            console.log(dataResponse);
         
-            if (pageCounter >= dataResponse.data.totalHits / 40) {
+            if (pageCounter >= totalHits / 40) {
                 hideButtonLoadmore()
                 const timerId = setTimeout(() => {
                     Notify.info("We're sorry, but you've reached the end of search results.");
@@ -69,7 +68,7 @@ function createMarkup(dataResponse) {
         return `
     <div class="photo-card">
     <a href="${largeImageURL}" >
-    <img class="image" src="${webformatURL}" alt="${tags}" title="" loading="lazy" />
+    <img class="image" src="${webformatURL}" alt="${tags}" title="" loading="lazy" /></a>
     <div class="info">
             <p class="info-item">
                 <b>Likes</b>
@@ -87,13 +86,11 @@ function createMarkup(dataResponse) {
                 <b>Downloads</b>
                 ${downloads}
             </p>
-        </div></a>
+        </div>
         
     </div>
         `}).join('');
     getEl('.gallery').insertAdjacentHTML('beforeend', markup)
-
-
 }
 
 function clearMarkup() {
