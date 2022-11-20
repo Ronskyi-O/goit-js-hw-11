@@ -11,6 +11,7 @@ let pageCounter = 1
 
 getEl('#search-form').addEventListener('submit', onImputSabmit);
 getEl('.load-more').addEventListener('click', loadMore)
+// window.addEventListener('scroll', unlimitedScroll)
 
 
 
@@ -33,7 +34,12 @@ function onImputSabmit(event) {
         } else {
             createMarkup(dataResponse);
             showButtonLoadmore();
-            
+
+            if (totalHits < 40) {
+                hideButtonLoadmore();
+                Notify.info("We're sorry, but you've reached the end of search results.");
+            };
+
             Notify.info(`Hooray! We found ${totalHits} images.`);
             openImage();
         }
@@ -51,7 +57,7 @@ function loadMore(event) {
         createMarkup(dataResponse);
         incrementPageCounter()
         
-            if (pageCounter >= totalHits / 40 || totalHits < 40) {
+            if (pageCounter >= totalHits / 40) {
                 hideButtonLoadmore()
                 const timerId = setTimeout(() => {
                     Notify.info("We're sorry, but you've reached the end of search results.");
@@ -75,7 +81,7 @@ function createMarkup(dataResponse) {
         return `
          <a href="${largeImageURL}" >
     <div class="photo-card">
-    <img class="image" src="${webformatURL}" alt="${tags}" title="" loading="lazy" />
+    <img class="image" src="${webformatURL}" title="${tags}" loading="lazy" />
     <div class="info">
             <p class="info-item">
                 <b>Likes</b>
@@ -113,9 +119,32 @@ function hideButtonLoadmore(params) {
 }
 
 function openImage() {
-    var lightbox = new SimpleLightbox('.gallery a');
-    var gallery = $('.gallery a').simpleLightbox();
-    gallery.refresh();
+    const options = {
+        aptionsData: "alt",
+        captionDelay: "250",
+    }
+    var lightbox = new SimpleLightbox('.gallery a', options );
+    lightbox.refresh();
 }
 
+// function unlimitedScroll() {
+//     const { scrollHeight, scrollTop, clientHeight } = document.documentElement
+        
+//     if (scrollTop === scrollHeight - clientHeight) {
+//         fetchImages(searchImageName, pageCounter).then(dataResponse => {
+//             const totalHits = dataResponse.data.totalHits;
 
+//             createMarkup(dataResponse);
+//             incrementPageCounter()
+        
+//             if (pageCounter >= totalHits / 40) {
+//                 hideButtonLoadmore()
+//                 const timerId = setTimeout(() => {
+//                     Notify.info("We're sorry, but you've reached the end of search results.");
+//                 }, 2000)
+//             };
+
+//             openImage()
+//         })
+//     }
+// }
