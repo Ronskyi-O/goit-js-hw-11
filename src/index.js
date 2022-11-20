@@ -1,4 +1,5 @@
-import {fetchImages} from './js/api-service'
+import { fetchImages } from './js/api-service'
+
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from "simplelightbox";
@@ -10,6 +11,7 @@ let pageCounter = 1
 
 getEl('#search-form').addEventListener('submit', onImputSabmit);
 getEl('.load-more').addEventListener('click', loadMore)
+
 
 
 function onImputSabmit(event) {
