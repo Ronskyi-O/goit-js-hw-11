@@ -33,27 +33,32 @@ function onImputSabmit(event) {
         } else {
             createMarkup(dataResponse);
             showButtonLoadmore();
+            
             Notify.info(`Hooray! We found ${totalHits} images.`);
+            openImage();
         }
     }
     )
     incrementPageCounter();
+    
+
 }
 
 function loadMore(event) {
     fetchImages(searchImageName, pageCounter).then(dataResponse => {
             const totalHits = dataResponse.data.totalHits;
 
-            createMarkup(dataResponse);
-            incrementPageCounter()
+        createMarkup(dataResponse);
+        incrementPageCounter()
         
-            if (pageCounter >= totalHits / 40) {
+            if (pageCounter >= totalHits / 40 || totalHits < 40) {
                 hideButtonLoadmore()
                 const timerId = setTimeout(() => {
                     Notify.info("We're sorry, but you've reached the end of search results.");
                 }, 2000)
-                
-        } 
+        };
+
+        openImage()
         })
     }
 
@@ -68,9 +73,9 @@ pageCounter = 1
 function createMarkup(dataResponse) {
     const markup = dataResponse.data.hits.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         return `
+         <a href="${largeImageURL}" >
     <div class="photo-card">
-    <a href="${largeImageURL}" >
-    <img class="image" src="${webformatURL}" alt="${tags}" title="" loading="lazy" /></a>
+    <img class="image" src="${webformatURL}" alt="${tags}" title="" loading="lazy" />
     <div class="info">
             <p class="info-item">
                 <b>Likes</b>
@@ -90,7 +95,7 @@ function createMarkup(dataResponse) {
             </p>
         </div>
         
-    </div>
+    </div></a>
         `}).join('');
     getEl('.gallery').insertAdjacentHTML('beforeend', markup)
 }
@@ -106,3 +111,11 @@ function showButtonLoadmore() {
 function hideButtonLoadmore(params) {
     getEl('.load-more').classList.add("is-hidden")
 }
+
+function openImage() {
+    var lightbox = new SimpleLightbox('.gallery a');
+    var gallery = $('.gallery a').simpleLightbox();
+    gallery.refresh();
+}
+
+
